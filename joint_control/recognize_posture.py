@@ -43,7 +43,7 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
         clf2 = pickle.load(open(ROBOT_POSE_CLF))
         posture = clf2.predict([data_for_clf])
         print classes[int(posture)]
-        return posture
+        return classes[int(posture)]
 
 if __name__ == '__main__':
     agent = PostureRecognitionAgent()
