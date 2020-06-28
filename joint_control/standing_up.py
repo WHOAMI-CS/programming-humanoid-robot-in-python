@@ -16,16 +16,24 @@ class StandingUpAgent(PostureRecognitionAgent):
         return super(StandingUpAgent, self).think(perception)
 
     def standing_up(self):
-        posture = self.posture
-        # YOUR CODE HERE
-        if posture == "Left":
-            if self.keyframes!= rightBellyToStand():
-                self.keyframes = rightBellyToStand()
-        elif posture == "Back":
+        if self.posture == "Belly":
+            self.keyframes = leftBellyToStand()
+        elif self.posture == "Left":
             self.keyframes = rightBackToStand()
-        # elif posture == "Belly":
-        #     self.keyframes = rightBellyToStand()
-
+        elif self.posture == "Right":
+            self.keyframes = leftBackToStand()
+        elif self.posture == "Back":
+            self.keyframes = leftBackToStand()
+        elif self.posture == "Crouch":
+            self.keyframes = leftBackToStand()
+        elif self.posture == "Sit":
+            self.keyframes = rightBackToStand()
+        elif self.posture == "Frog":
+            self.keyframes = leftBackToStand()
+        elif self.posture == "Knee":
+            self.keyframes = rightBackToStand()
+        elif self.posture == "Stand":
+            self.sTime= -1
 
 
 
