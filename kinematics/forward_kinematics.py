@@ -16,13 +16,14 @@
 '''
 
 # add PYTHONPATH
-from angle_interpolation import AngleInterpolationAgent
+
 from numpy.matlib import matrix, identity
 import math
 import os
 import sys
 sys.path.append(os.path.join(os.path.abspath(
     os.path.dirname(__file__)), '..', 'joint_control'))
+from angle_interpolation import AngleInterpolationAgent
 
 
 class ForwardKinematicsAgent(AngleInterpolationAgent):
@@ -41,7 +42,7 @@ class ForwardKinematicsAgent(AngleInterpolationAgent):
                        'LArm': ['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll'],
                        'LLeg': ['LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'LAnklePitch', 'LAnkleRoll'],
                        'RLeg': ['RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch', 'RAnklePitch', 'RAnkleRoll'],
-                       'LArm': ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll']
+                       'RArm': ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll']
                        }
         self.jointLength = {'HeadYaw': [0, 0, 126.5],
                             'HeadPitch': [0, 0, 0],
@@ -110,20 +111,20 @@ class ForwardKinematicsAgent(AngleInterpolationAgent):
         T[0, 3] = self.jointLength[joint_name][0]
         T[1, 3] = self.jointLength[joint_name][1]
         T[2, 3] = self.jointLength[joint_name][2]
+        return T
 
     def forward_kinematics(self, joints):
         '''forward kinematics
 
         :param joints: {joint_name: joint_angle}
         '''
-        for chain_joints in self.chains.values():
-            T = identity(4)
-            for joint in chain_joints:
-                angle = joints[joint]
-                Tl = self.local_trans(joint, angle)
-                # YOUR CODE HERE
-                T = T * Tl
-                self.transforms[joint] = T
+        T = identity(4)
+        for joint in joints:
+            angle = joints[joint]
+            Tl = self.local_trans(joint, angle)
+            # YOUR CODE HERE
+            T = T * Tl
+            self.transforms[joint] = T
 
 
 if __name__ == '__main__':
